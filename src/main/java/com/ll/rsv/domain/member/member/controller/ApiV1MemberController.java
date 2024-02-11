@@ -1,6 +1,7 @@
 package com.ll.rsv.domain.member.member.controller;
 
 import org.springframework.lang.NonNull;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ApiV1MemberController {
 	private final MemberService memberService;
 	private final Rq rq;
