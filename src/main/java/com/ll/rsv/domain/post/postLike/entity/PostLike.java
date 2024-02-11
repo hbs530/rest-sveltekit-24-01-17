@@ -1,21 +1,28 @@
 package com.ll.rsv.domain.post.postLike.entity;
+
+import static lombok.AccessLevel.*;
+
 import com.ll.rsv.domain.member.member.entity.Member;
 import com.ll.rsv.domain.post.post.entity.Post;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.Delegate;
-
-import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor(access = PROTECTED)
 @ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PostLike {
 	@EmbeddedId
 	@Delegate
+	@EqualsAndHashCode.Include
 	private PostLikeId id;
 
 	@Builder

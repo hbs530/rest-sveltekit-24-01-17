@@ -31,6 +31,6 @@ public class PostDetail extends BaseEntity {
 	@ManyToOne(fetch = LAZY)
 	private Post post;
 	private String name;
-	@Column(columnDefinition = "TEXT")
+	@Column(columnDefinition = "LONGTEXT")
 	private String val;
 }
