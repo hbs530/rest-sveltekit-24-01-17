@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,7 @@ import com.ll.rsv.domain.post.post.service.PostService;
 import com.ll.rsv.global.exceptions.GlobalException;
 import com.ll.rsv.global.rq.Rq;
 import com.ll.rsv.global.rsData.RsData;
+import com.ll.rsv.standard.base.Empty;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -98,6 +100,22 @@ public class ApiV1PostController {
 		return RsData.of(
 				"%d번 글이 수정되었습니다.".formatted(id),
 				new EditResponseBody(new PostDto(post))
+		);
+	}
+
+	@DeleteMapping(value = "/{id}")
+	public RsData<Empty> delete(
+			@PathVariable long id
+	) {
+		Post post = postService.findById(id).orElseThrow(GlobalException.E404::new);
+
+		if (!postService.canDelete(rq.getMember(), post))
+			throw new GlobalException("403-1", "권한이 없습니다.");
+
+		postService.delete(post);
+
+		return RsData.of(
+				"%d번 글이 삭제되었습니다.".formatted(id)
 		);
 	}
 }

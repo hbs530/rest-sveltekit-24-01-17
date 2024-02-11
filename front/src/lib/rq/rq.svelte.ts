@@ -19,6 +19,10 @@ class Rq {
     goto(url, { replaceState: true });
   }
 
+  public reload() {
+    this.replace('/redirect?url=' + window.location.href);
+  }
+  
   // API END POINTS
   public apiEndPoints() {
     return createClient<paths>({
