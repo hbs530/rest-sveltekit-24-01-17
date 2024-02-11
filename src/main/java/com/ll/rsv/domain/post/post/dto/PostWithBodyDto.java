@@ -1,11 +1,13 @@
 package com.ll.rsv.domain.post.post.dto;
 
-import com.ll.rsv.domain.post.post.entity.Post;
-import lombok.Getter;
 import org.springframework.lang.NonNull;
 
+import com.ll.rsv.domain.post.post.entity.Post;
+
+import lombok.Getter;
+
 @Getter
-public class PostWithBodyDto extends AbsPostDto {
+public class PostWithBodyDto extends PostDto {
 	@NonNull
 	private String body;
 
