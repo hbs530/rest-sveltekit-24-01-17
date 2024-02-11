@@ -7,8 +7,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -40,6 +45,11 @@ public class SecurityConfig {
 								csrf.ignoringRequestMatchers(
 										"/h2-console/**"
 								)
+				)
+				.oauth2Login(
+						oauth2Login ->
+								oauth2Login
+										.successHandler(customAuthenticationSuccessHandler)
 				);
 
 		return http.build();

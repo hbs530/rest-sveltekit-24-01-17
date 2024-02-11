@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.ll.rsv.global.jpa.entity.BaseTime;
+import com.ll.rsv.standard.util.Ut;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,6 +34,8 @@ public class Member extends BaseTime {
 	private String password;
 	@Column(unique = true)
 	private String refreshToken;
+	private String nickname;
+	private String profileImgUrl;
 	// 캐시 데이터
 	@Transient
 	private Boolean _isAdmin;
@@ -59,7 +62,7 @@ public class Member extends BaseTime {
 
 	@Transient
 	public String getName() {
-		return username;
+		return nickname;
 	}
 
 	@Transient
@@ -77,5 +80,9 @@ public class Member extends BaseTime {
 	@Transient
 	public void setAdmin(boolean admin) {
 		this._isAdmin = admin;
+	}
+
+	public String getProfileImgUrlOrDefault() {
+		return Ut.str.hasLength(profileImgUrl) ? profileImgUrl : "https://placehold.co/640x640?text=O_O";
 	}
 }

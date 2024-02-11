@@ -22,7 +22,9 @@ public class MemberDto {
 	@NonNull
 	private LocalDateTime modifyDate;
 	@NonNull
-	private String username;
+	private String name;
+	@NonNull
+	private String profileImgUrl;
 	@NonNull
 	private List<String> authorities;
 
@@ -30,7 +32,8 @@ public class MemberDto {
 		this.id = member.getId();
 		this.createDate = member.getCreateDate();
 		this.modifyDate = member.getModifyDate();
-		this.username = member.getUsername();
+		this.name = member.getName();
+		this.profileImgUrl = member.getProfileImgUrlOrDefault();
 		this.authorities = member.getAuthoritiesAsStringList();
 	}
 }
