@@ -1,6 +1,7 @@
 package com.ll.rsv.domain.post.post.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,5 +32,9 @@ public class PostService {
 
 	public List<Post> findByPublished(boolean published) {
 		return postRepository.findByPublishedOrderByIdDesc(published);
+	}
+
+	public Optional<Post> findById(long id) {
+		return postRepository.findById(id);
 	}
 }
