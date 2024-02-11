@@ -1,0 +1,19 @@
+package com.ll.rsv.standard.base;
+
+import org.springframework.stereotype.Component;
+
+import com.ll.rsv.global.scope.transaction.TransactionScope;
+
+@TransactionScope
+@Component
+public class Foo {
+	private final String name;
+
+	public Foo() {
+		this.name = "foo " + Math.random();
+	}
+
+	public String toString() {
+		return this.name;
+	}
+}
