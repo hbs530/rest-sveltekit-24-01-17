@@ -25,6 +25,8 @@ public abstract class AbsPostDto {
 	private String title;
 	@NonNull
 	private boolean published;
+	@NonNull
+	private long likesCount;
 
 	@Setter
 	private Boolean actorCanRead;
@@ -41,5 +43,6 @@ public abstract class AbsPostDto {
 		this.authorName = post.getAuthor().getName();
 		this.title = post.getTitle();
 		this.published = post.isPublished();
+		this.likesCount = post.getLikesCount();
 	}
 }
