@@ -1,17 +1,25 @@
 package com.ll.rsv.domain.post.post.controller;
 
+import java.util.List;
+
+import org.springframework.lang.NonNull;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.ll.rsv.domain.post.post.dto.PostDto;
 import com.ll.rsv.domain.post.post.entity.Post;
 import com.ll.rsv.domain.post.post.service.PostService;
 import com.ll.rsv.global.exceptions.GlobalException;
 import com.ll.rsv.global.rsData.RsData;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.NonNull;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -52,7 +60,7 @@ public class ApiV1PostController {
 	}
 
 
-	public record EditRequestBody(@NotBlank String title, @NotBlank String body) {
+	public record EditRequestBody(@NotBlank String title, @NotBlank String body, @NotNull boolean published) {
 	}
 
 	public record EditResponseBody(@NonNull PostDto item) {
@@ -65,7 +73,7 @@ public class ApiV1PostController {
 	) {
 		Post post = postService.findById(id).orElseThrow(GlobalException.E404::new);
 
-		postService.edit(post, requestBody.title, requestBody.body);
+		postService.edit(post, requestBody.title, requestBody.body, requestBody.published);
 
 		return RsData.of(
 				"%d번 글이 수정되었습니다.".formatted(id),
