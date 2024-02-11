@@ -1,6 +1,8 @@
 package com.ll.rsv.domain.post.post.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +13,9 @@ import com.ll.rsv.domain.post.post.entity.Post;
 import com.ll.rsv.domain.post.post.entity.PostDetail;
 import com.ll.rsv.domain.post.post.repository.PostDetailRepository;
 import com.ll.rsv.domain.post.post.repository.PostRepository;
+import com.ll.rsv.domain.post.postLike.entity.PostLike;
+import com.ll.rsv.domain.post.postLike.repository.PostLikeRepository;
+import com.ll.rsv.global.transactionCache.TransactionCache;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 	private final PostRepository postRepository;
 	private final PostDetailRepository postDetailRepository;
+	private final PostLikeRepository postLikeRepository;
+	private final TransactionCache transactionCache;
 
 	@Transactional
 	public Post write(Member author, String title, String body, boolean published) {
@@ -119,12 +126,18 @@ public class PostService {
 		if (actor == null) return false;
 		if (post == null) return false;
 
+		Map<Long, Boolean> likeMap = transactionCache.get("likeMap");
+		if (likeMap != null && likeMap.containsKey(post.getId())) return !likeMap.get(post.getId());
+
 		return !post.hasLike(actor);
 	}
 
 	public Boolean canCancelLike(Member actor, Post post) {
 		if (actor == null) return false;
 		if (post == null) return false;
+
+		Map<Long, Boolean> likeMap = transactionCache.get("likeMap");
+		if (likeMap != null && likeMap.containsKey(post.getId())) return likeMap.get(post.getId());
 
 		return post.hasLike(actor);
 	}
@@ -137,5 +150,31 @@ public class PostService {
 	@Transactional
 	public void cancelLike(Member actor, Post post) {
 		post.deleteLike(actor);
+	}
+
+	public void loadLikeMap(List<Post> posts, Member member) {
+		List<PostLike> likes = findLikesByPostInAndMember(posts, member);
+
+		Map<Long, Boolean> likeMap_ = likes
+				.stream()
+				.collect(
+						HashMap::new,
+						(map, like) -> map.put(like.getPost().getId(), true),
+						HashMap::putAll
+				);
+
+		Map<Long, Boolean> likeMap = posts
+				.stream()
+				.collect(
+						HashMap::new,
+						(map, post) -> map.put(post.getId(), likeMap_.getOrDefault(post.getId(), false)),
+						HashMap::putAll
+				);
+
+		transactionCache.put("likeMap", likeMap);
+	}
+
+	private List<PostLike> findLikesByPostInAndMember(List<Post> posts, Member member) {
+		return postLikeRepository.findByIdPostInAndIdMember(posts, member);
 	}
 }
