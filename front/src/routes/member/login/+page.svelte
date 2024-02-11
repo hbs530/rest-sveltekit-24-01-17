@@ -6,21 +6,29 @@
     if (form.username.value.length === 0) {
       rq.msgError('아이디를 입력해주세요.');
       form.username.focus();
+
       return;
     }
+
     form.password.value = form.password.value.trim();
     if (form.password.value.length === 0) {
       rq.msgError('비밀번호를 입력해주세요.');
       form.password.focus();
+
       return;
     }
+
     const { data, error } = await rq.apiEndPoints().POST('/api/v1/members/login', {
       body: {
         username: form.username.value,
         password: form.password.value
       }
     });
-    rq.msgAndRedirect(data, error, '/');
+
+    if (error) rq.msgError(error.msg);
+    else {
+      rq.msgAndRedirect(data, undefined, '/', () => rq.setLogined(data.data.item));
+    }
   }
 </script>
 
