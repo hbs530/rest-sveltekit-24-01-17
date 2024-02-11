@@ -7,6 +7,7 @@ import org.springframework.lang.NonNull;
 import com.ll.rsv.domain.post.post.entity.Post;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class PostDto {
@@ -26,6 +27,13 @@ public class PostDto {
 	private String body;
 	@NonNull
 	private boolean published;
+
+	@Setter
+	private Boolean actorCanRead;
+	@Setter
+	private Boolean actorCanEdit;
+	@Setter
+	private Boolean actorCanDelete;
 
 	public PostDto(Post post) {
 		this.id = post.getId();
