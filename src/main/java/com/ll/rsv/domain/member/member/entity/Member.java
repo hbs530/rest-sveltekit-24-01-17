@@ -48,14 +48,17 @@ public class Member extends BaseTime {
 
 		authorities.add("ROLE_MEMBER");
 
-		if (List.of("system", "admin").contains(username)) {
+		if (isAdmin())
 			authorities.add("ROLE_ADMIN");
-		}
 
 		return authorities;
 	}
 
 	public String getName() {
 		return username;
+	}
+
+	public boolean isAdmin() {
+		return List.of("system", "admin").contains(username);
 	}
 }
