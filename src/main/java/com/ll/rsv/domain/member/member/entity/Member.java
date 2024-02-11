@@ -1,18 +1,24 @@
 package com.ll.rsv.domain.member.member.entity;
 
-import com.ll.rsv.global.jpa.entity.BaseTime;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import static lombok.AccessLevel.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static lombok.AccessLevel.PROTECTED;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import com.ll.rsv.global.jpa.entity.BaseTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
@@ -47,5 +53,9 @@ public class Member extends BaseTime {
 		}
 
 		return authorities;
+	}
+
+	public String getName() {
+		return username;
 	}
 }

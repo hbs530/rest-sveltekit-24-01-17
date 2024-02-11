@@ -1,5 +1,7 @@
 package com.ll.rsv.domain.post.post.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,5 +27,9 @@ public class PostService {
 				.build();
 
 		postRepository.save(post);
+	}
+
+	public List<Post> findByPublished(boolean published) {
+		return postRepository.findByPublishedOrderByIdDesc(published);
 	}
 }

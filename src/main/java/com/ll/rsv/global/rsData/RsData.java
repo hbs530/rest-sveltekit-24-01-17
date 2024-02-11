@@ -1,14 +1,16 @@
 package com.ll.rsv.global.rsData;
 
+import static lombok.AccessLevel.*;
+
+import org.springframework.lang.NonNull;
+
 import com.ll.rsv.standard.base.Empty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.NonNull;
 
-import static lombok.AccessLevel.PRIVATE;
-
-@AllArgsConstructor
+@AllArgsConstructor(access = PRIVATE)
 @NoArgsConstructor(access = PRIVATE)
 @Getter
 public class RsData<T> {
